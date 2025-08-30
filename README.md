@@ -2,7 +2,7 @@
 
 **Team:** PARADOX
 **Challenge:** Esya '25 - IIIT Delhi
-[cite_start]**Final Test Set Macro F1-Score:** 0.6407 [cite: 171]
+**Final Test Set Macro F1-Score:** 0.6407
 
 ---
 
@@ -10,27 +10,48 @@
 
 This project presents our winning solution for the Deception Detection Challenge, hosted by IIIT Delhi as part of Esya '25. The goal was to create a **novel architecture** to identify deceptive messages in the strategic board game, Diplomacy.
 
-[cite_start]Our final model, the **Context-Aware Multi-Vector Ensemble Framework (CMVEF)**, is a sophisticated machine learning pipeline that goes beyond simple text classification[cite: 108]. [cite_start]It operates on the principle that deception is revealed not just by a player's words, but by the context of the game, their strategic actions, their personal history, and their relationships with other players[cite: 109].
+Our final model, the **Context-Aware Multi-Vector Ensemble Framework (CMVEF)**, is a sophisticated machine learning pipeline that goes beyond simple text classification. It operates on the principle that deception is revealed not just by a player's words, but by the context of the game, their strategic actions, their personal history, and their relationships with other players.
 
 ## 2. Our Approach: The CMVEF Pipeline
 
-[cite_start]Instead of a single end-to-end model as initially proposed, our framework is a multi-stage process that systematically extracts and learns from diverse signals of deception[cite: 112].
+Instead of a single end-to-end model as initially proposed, our framework is a multi-stage process that systematically extracts and learns from diverse signals of deception.
 
 ### Key Innovations:
 
-1.  [cite_start]**Data Augmentation via Strategic Commentary**: We created a `commentary.csv` file by translating raw, structured game moves into natural language summaries of each player's strategy for that turn[cite: 113, 114]. [cite_start]This provided a crucial textual counterpoint to the conversational messages, grounding the analysis in the game's reality[cite: 128, 129].
+1.  **Data Augmentation via Strategic Commentary**: We created a `commentary.csv` file by translating raw, structured game moves into natural language summaries of each player's strategy for that turn. This provided a crucial textual counterpoint to the conversational messages, grounding the analysis in the game's reality.
 
-2.  [cite_start]**Rich, Multi-Faceted Feature Engineering**: We constructed a comprehensive feature set to give our models a 360-degree view of every message, including[cite: 116]:
-    * [cite_start]**Semantic Vectors**: `Sentence-Transformer` embeddings for both messages and strategic commentary[cite: 136, 137].
-    * [cite_start]**Lexical & Linguistic Cues**: TF-IDF vectors to capture keyword importance [cite: 142][cite_start], alongside rule-based features for promise-related words (e.g., "support", "I will") and linguistic hedges (e.g., "maybe")[cite: 144].
-    * [cite_start]**Behavioral & Historical Analysis**: Features tracking a player's historical "lie rate" in previous seasons and their specific truthfulness history with the message's receiver[cite: 149].
+2.  **Rich, Multi-Faceted Feature Engineering**: We constructed a comprehensive feature set to give our models a 360-degree view of every message, including:
+    * **Semantic Vectors**: `Sentence-Transformer` embeddings for both messages and strategic commentary.
+    * **Lexical & Linguistic Cues**: TF-IDF vectors to capture keyword importance, alongside rule-based features for promise-related words (e.g., "support", "I will") and linguistic hedges (e.g., "maybe").
+    * **Behavioral & Historical Analysis**: Features tracking a player's historical "lie rate" in previous seasons and their specific truthfulness history with the message's receiver.
 
-3.  [cite_start]**Stacked Ensemble Modeling**: To tackle the severe class imbalance (~95% truthful messages)[cite: 153], we built a stacked ensemble:
-    * [cite_start]**Base Models**: A **LightGBM** classifier (trained on SMOTEENN-resampled data) and a **PyTorch-based MLP** (using a Weighted Sampler and Focal Loss)[cite: 118].
-    * [cite_start]**Meta-Model**: A **Logistic Regression** classifier trained on the predictions of the two base models, learning to weigh their outputs for the most accurate and robust final prediction[cite: 119, 166].
+3.  **Stacked Ensemble Modeling**: To tackle the severe class imbalance (~95% truthful messages), we built a stacked ensemble:
+    * **Base Models**: A **LightGBM** classifier (trained on SMOTEENN-resampled data) and a **PyTorch-based MLP** (using a Weighted Sampler and Focal Loss).
+    * **Meta-Model**: A **Logistic Regression** classifier trained on the predictions of the two base models, learning to weigh their outputs for the most accurate and robust final prediction.
 
 ## 3. How to Run
 
-The entire pipeline, from feature engineering to model training and evaluation, is contained within the provided Python notebook (`DeceptionDetection_PARADOX.pdf`).
+The entire pipeline, from feature engineering to model training and evaluation, is contained within the `DeceptionDetection_PARADOX.ipynb` notebook.
 
-To reproduce the results, run the cells in the notebook sequentially. [cite_start]Ensure that `train.csv`, `test.csv`, and the generated `commentary.csv` are in the same directory[cite: 208, 209, 210].
+To reproduce the results, run the cells in the notebook sequentially. Ensure that `train.csv`, `test.csv`, and the generated `commentary.csv` are in the same directory.
+
+## 4. File Descriptions
+
+Here is a brief overview of the key files in this project:
+
+* **Code & Reports:**
+    * `DeceptionDetection_PARADOX.ipynb`: The main Jupyter Notebook containing the complete, runnable code for our solution.
+    * `DeceptionDetection_PARADOX.pdf`: A PDF export of the main code notebook for easy viewing.
+    * `FinalApproachReport.pdf`: The final, comprehensive report detailing our methodology, feature engineering, modeling approach, and results.
+    * `Proposal.pdf`: The initial proposal document outlining our first architectural idea, the "CIP-Net".
+    * `Problem.png`: An image file describing the official challenge, its requirements, and evaluation criteria.
+
+* **Data & Utility Scripts:**
+    * `train.csv` / `test.csv`: The processed training and testing datasets.
+    * `commentary.csv`: The augmented dataset containing natural language summaries of game moves, generated by our script.
+    * [cite_start]`create_commentary.py`: The Python script used to process raw game logs and generate `commentary.csv`[cite: 19].
+    * [cite_start]`jsonl_to_csv.py`: A utility script used to convert the original data from `.jsonl` to `.csv` format[cite: 18].
+
+* **Trained Models:**
+    * [cite_start]`lgb_diplomacy.model`: The saved and trained LightGBM base model file[cite: 734].
+    * [cite_start]`mlp_diplomacy_full.pt`: The saved and trained PyTorch MLP base model file[cite: 734].
