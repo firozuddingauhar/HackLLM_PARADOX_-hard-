@@ -1,4 +1,4 @@
-# Deception Detection in Diplomacy
+# Diplomacy Deception Detection
 
 **Team:** PARADOX
 **Challenge:** Esya '25 - IIIT Delhi
